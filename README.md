@@ -1,10 +1,10 @@
-# evento-backend
+# OKARINA - hay algo escuchando en esta sala
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 [![last commit](https://img.shields.io/github/last-commit/Intimaria/okarina)](https://github.com/Intimaria/okarina/commits/main)
 [![top language](https://img.shields.io/github/languages/top/Intimaria/okarina)](https://github.com/Intimaria/okarina)
 
-Plataforma de telemetría para el evento: nodos ESP32 → MQTT/TLS → Telegraf → InfluxDB → Grafana.
+Plataforma de telemetría (monitoreo ambiental) para Nerdearla: nodos ESP32 → MQTT/TLS → Telegraf → InfluxDB → Grafana.
 
 - **MQTT** sobre **443 con TLS + auth** (el 443 es el que el predio deja salir).
 - **Grafana** expuesto por **Cloudflare Tunnel** (atado a `localhost:3000`, sin puerto abierto).
@@ -13,10 +13,10 @@ Plataforma de telemetría para el evento: nodos ESP32 → MQTT/TLS → Telegraf 
 
 Diseño: [`docs/diseno.md`](docs/diseno.md).
 
-> Los hostnames reales (broker y Grafana), el email del certificado y las contraseñas
-> viven cifrados en `secrets.enc.yaml` (sops), no en este repo.
+> Los hostnames (broker y Grafana), el email del certificado y las contraseñas
+> son cifrados en `secrets.enc.yaml` (sops).
 
-## Requisitos (control node = tu laptop)
+## Requisitos 
 
 - `direnv` + `asdf` (`.tool-versions` pinea `sops` y `age`)
 - `ansible` + las colecciones:
