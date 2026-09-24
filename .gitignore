@@ -39,6 +39,7 @@ web/site/backup/
 # --- inventario real -----
 ansible/inventory/hosts.yml
 stations.md
+/docs.md
 
 # --- nodo co2 original--------------------
 firmware/node-co2/
