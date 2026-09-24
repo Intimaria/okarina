@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Señal WiFi por nodo — Okarina</title>
+<style>
+  :root{color-scheme:dark;}
+  *{box-sizing:border-box;}
+  body{margin:0;background:#0d0f0e;color:#e7ece8;font:16px/1.4 ui-sans-serif,system-ui,sans-serif;padding:16px;max-width:640px;margin:0 auto;}
+  h1{font-size:19px;margin:0 0 4px;}
+  .sub{color:#8b968f;font-size:13px;margin-bottom:14px;}
+  .banner{padding:10px 12px;border-radius:10px;font-size:13px;margin-bottom:14px;background:#1b211d;color:#c9d3cc;}
+  .row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px;border:1px solid #232a26;border-radius:12px;margin-bottom:10px;background:#141815;}
+  .name{font-weight:700;font-size:17px;}
+  .meta{color:#8b968f;font-size:12px;margin-top:4px;}
+  .rssi{font-size:27px;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;}
+  .g{color:#3ddc84;} .y{color:#f0c419;} .r{color:#ff5c5c;} .n{color:#8b968f;}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:middle;background:currentColor;}
+</style>
+</head>
+<body>
+<h1>Señal WiFi por nodo</h1>
+<div class="sub" id="fresh">cargando…</div>
+<div class="banner">Umbral: ≥ −70 <b>verde</b> · −70 a −80 <b>ámbar</b> · ≤ −80 <b>rojo</b>. En rojo el enlace se pone inestable.</div>
+<div id="list"></div>
+<script>
+const NAMES={'co2-01':'Coworking','co2-02':'Tienda','co2-05':'Gran sala','co2-06':'Auditorio','co2-07':'Abasto','co2-08':'Columnas'};
+const DATA='data/latest.json';
+function cls(v){ return v>=-70?'g':(v>=-80?'y':'r'); }
+function ago(t){ if(!t) return ''; const s=Math.max(0,Math.round(Date.now()/1000-t)); return s<60?`hace ${s}s`:`hace ${Math.round(s/60)} min`; }
+async function load(){
+  let d; try{ d=await (await fetch(DATA,{cache:'no-store'})).json(); }catch(e){ document.getElementById('fresh').textContent='sin datos'; return; }
+  document.getElementById('fresh').textContent='actualizado '+ago(d.generated);
+  const rows=Object.entries(d.nodes||{})
+    .filter(([id,n])=> n.rssi_dbm!=null)
+    .sort((a,b)=> b[1].rssi_dbm - a[1].rssi_dbm);
+  document.getElementById('list').innerHTML = rows.map(([id,n])=>{
+    const v=n.rssi_dbm, c=cls(v);
+    return `<div class="row">
+      <div><div class="name">${NAMES[id]||id}</div>
+      <div class="meta">${id} · reconex. ${n.wifi_reconn??'?'} · ${ago(n.t)}</div></div>
+      <div class="rssi ${c}"><span class="dot"></span>${v}</div>
+    </div>`;
+  }).join('') || '<div class="row">sin nodos</div>';
+}
+load(); setInterval(load, 5000);
+</script>
+</body>
+</html>
