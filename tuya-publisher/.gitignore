@@ -1,0 +1,7 @@
+.envrc
+devices.json
+tinytuya.json
+snapshot.json
+__pycache__/
+*.pyc
+*.log

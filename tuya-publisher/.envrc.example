@@ -1,0 +1,25 @@
+# Copiá a .envrc y completá. Los secretos (local key, pass MQTT) mejor via SOPS.
+# uv corre el script con sus deps solo (PEP 723), no hace falta venv.
+
+# --- Enchufe Tuya (sacar con el wizard, ver README) ---
+export TUYA_DEVICE_ID=""          # device id del enchufe
+export TUYA_DEVICE_IP="Auto"      # "Auto" o la IP fija del enchufe en tu LAN
+export TUYA_LOCAL_KEY=""          # SECRETO -> SOPS
+export TUYA_VERSION="3.3"         # probar 3.4 / 3.5 si 3.3 no conecta
+
+# --- Broker MQTT (el mismo que los nodos) ---
+export MQTT_HOST="mqtt.example.com"
+export MQTT_PORT="443"
+export MQTT_USER="nodos"
+export MQTT_PASS=""               # SECRETO -> SOPS
+export MQTT_TLS="1"
+
+# --- Identidad / publicación ---
+export DEVICE="plug-01"
+export NODE_TYPE="volt"           # topic queda iot/volt/plug-01/telemetry
+export PERIOD_S="10"
+
+# --- Mapeo de DPs (confirmar con: uv run publisher.py --discover) ---
+export DP_V="20"; export SC_V="10"      # voltaje  (DP20 x10 -> V)
+export DP_A="18"; export SC_A="1000"    # corriente (DP18 en mA -> A)
+export DP_W="19"; export SC_W="10"      # potencia (DP19 x10 -> W)
