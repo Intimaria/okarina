@@ -12,15 +12,28 @@ DB     = os.environ.get("INFLUX_DB", "iot")
 OUT    = os.environ.get("OUT", "/data/latest.json")
 PERIOD = float(os.environ.get("PERIOD_S", "10"))
 # last(*) trae el último valor de cada campo por serie; agrupamos por nodo y tipo.
-Q = 'SELECT last(*) FROM "telemetry" WHERE time > now() - 10m GROUP BY "device","type"'
+# Ventana de 1 h: mostramos los nodos activos en la última hora (no solo los últimos minutos).
+Q = 'SELECT last(*) FROM "telemetry" WHERE time > now() - 1h GROUP BY "device","type"'
+# last(*) devuelve un `time` uniforme (no sirve); el tiempo real por serie sale de last(seq).
+QT = 'SELECT last(seq) FROM "telemetry" WHERE time > now() - 1h GROUP BY "device","type"'
+
+
+def _query(q):
+    url = f"{INFLUX}/query?" + urllib.parse.urlencode({"db": DB, "q": q, "epoch": "s"})
+    with urllib.request.urlopen(url, timeout=10) as r:
+        return json.load(r)
 
 
 def fetch():
-    url = f"{INFLUX}/query?" + urllib.parse.urlencode({"db": DB, "q": Q})
-    with urllib.request.urlopen(url, timeout=10) as r:
-        data = json.load(r)
+    times = {}
+    for res in _query(QT).get("results", []):
+        for s in res.get("series", []):
+            dev  = s.get("tags", {}).get("device")
+            vals = (s.get("values") or [[]])[0]
+            if dev and vals and vals[0] is not None:
+                times[dev] = int(vals[0])   # epoch (s) del último punto del nodo
     nodes = {}
-    for res in data.get("results", []):
+    for res in _query(Q).get("results", []):
         for s in res.get("series", []):
             tags = s.get("tags", {})
             dev  = tags.get("device", "?")
@@ -31,6 +44,8 @@ def fetch():
                 if c == "time":
                     continue
                 rec[c[5:] if c.startswith("last_") else c] = v
+            if dev in times:
+                rec["t"] = times[dev]
             nodes[dev] = rec
     return nodes
 
