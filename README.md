@@ -1,5 +1,9 @@
 # evento-backend
 
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
+[![last commit](https://img.shields.io/github/last-commit/Intimaria/okarina)](https://github.com/Intimaria/okarina/commits/main)
+[![top language](https://img.shields.io/github/languages/top/Intimaria/okarina)](https://github.com/Intimaria/okarina)
+
 Plataforma de telemetría para el evento: nodos ESP32 → MQTT/TLS → Telegraf → InfluxDB → Grafana.
 
 - **MQTT** sobre **443 con TLS + auth** (el 443 es el que el predio deja salir).
@@ -101,3 +105,8 @@ Firmwares en `firmware/`:
 
 Cada nodo lleva en su `secrets.h` (gitignored, copiar de `secrets.example.h`) el SSID/pass
 WiFi, el host del broker, `MQTT_USER`/`MQTT_PASS` y su `DEVICE_ID`.
+
+## Licencia
+
+Copyright (C) 2026 Inti María Tidball. Distribuido bajo la **GNU General Public License
+v3.0** — ver [`LICENSE`](LICENSE).
