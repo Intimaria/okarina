@@ -1,0 +1,6 @@
+---
+# mosquitto_domain y cert_email viven en secrets.enc.yaml (sops); ver playbook.yml.
+deploy_dir: /opt/evento-backend
+
+grafana_admin_user: admin
+mosquitto_uid: 1883   # user "mosquitto" del eclipse-mosquitto image

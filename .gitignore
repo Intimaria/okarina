@@ -1,0 +1,48 @@
+# --- secretos ----------------------------------------------------------------
+.age/
+secrets.plain.yaml
+*.agekey
+key.txt
+age-key.txt
+*.dec
+*.dec.*
+*.plain
+*.plain.*
+.env
+mosquitto/passwd
+mosquitto/certs/
+mosquitto/data/
+firmware/*/secrets.h
+
+# --- direnv ------------------------------------------------------------------
+.direnv/
+
+# --- datos generados ----------
+web/data/
+
+# --- backups locales  ------------------------------------------
+web/site/backup/
+
+# --- docker data -------------------------------------------------------------
+.docker_data/
+
+# --- binarios / paquetes -----------------------------------------------------
+*.deb
+
+# --- os / editor -------------------------------------------------------------
+.DS_Store
+*.swp
+*~
+.vscode/
+.idea/
+
+# --- inventario real -----
+ansible/inventory/hosts.yml
+stations.md
+
+# --- nodo co2 original--------------------
+firmware/node-co2/
+
+# --- assets no usados por el sitio (fuentes locales) -------------------------
+web/site/assets/*.svg
+web/deploy/

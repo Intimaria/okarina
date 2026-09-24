@@ -1,0 +1,69 @@
+---
+- name: Crear directorio de deploy
+  ansible.builtin.file:
+    path: "{{ deploy_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Sincronizar repo al servidor
+  ansible.posix.synchronize:
+    src: "{{ playbook_dir }}/../"
+    dest: "{{ deploy_dir }}/"
+    rsync_opts:
+      - "--exclude=.git"
+      - "--exclude=.direnv"
+      - "--exclude=ansible"
+      - "--exclude=mosquitto/data"
+      - "--exclude=mosquitto/passwd"
+      - "--exclude=mosquitto/certs"
+    delete: false
+
+- name: Templar .env desde sops (secretos, mode 0600)
+  ansible.builtin.template:
+    src: env.j2
+    dest: "{{ deploy_dir }}/.env"
+    owner: root
+    group: root
+    mode: "0600"
+
+- name: Generar hash del passwd de mosquitto
+  ansible.builtin.shell:
+    cmd: >
+      docker run --rm -i eclipse-mosquitto:2.0 sh -c
+      "mosquitto_passwd -c -b /tmp/passwd '{{ secrets.MQTT_USER }}' '{{ secrets.MQTT_PASS }}' >/dev/null 2>&1 && cat /tmp/passwd"
+  register: mosquitto_passwd_out
+  changed_when: false
+
+# Escribimos el archivo con `copy` (idempotente): si el hash cambió, notifica el
+# handler que reinicia mosquitto. mosquitto carga el password_file SOLO al arrancar.
+- name: Escribir passwd de mosquitto (reinicia si cambia)
+  ansible.builtin.copy:
+    content: "{{ mosquitto_passwd_out.stdout }}\n"
+    dest: "{{ deploy_dir }}/mosquitto/passwd"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Reiniciar mosquitto
+
+- name: Asegurar dir de datos de mosquitto (ownership no-root)
+  ansible.builtin.file:
+    path: "{{ deploy_dir }}/mosquitto/data"
+    state: directory
+    owner: "{{ mosquitto_uid }}"
+    group: "{{ mosquitto_uid }}"
+    mode: "0755"
+
+- name: Asegurar dir de certs
+  ansible.builtin.file:
+    path: "{{ deploy_dir }}/mosquitto/certs"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Desplegar el stack
+  community.docker.docker_compose_v2:
+    project_src: "{{ deploy_dir }}"
+    state: present

@@ -1,0 +1,114 @@
+# Backend 
+# Nodos ESP32 --MQTT/TLS:443--> mosquitto --Telegraf--> InfluxDB --Grafana--> dashboards
+# Grafana se expone solo por Cloudflare Tunnel (localhost:3000).
+# Secretos via .env (generado por Ansible desde secrets.enc.yaml / sops).
+
+services:
+  mosquitto:
+    image: eclipse-mosquitto:2.0
+    container_name: evento_mosquitto
+    restart: unless-stopped
+    user: "1883:1883"   # no-root
+    ports:
+      - "443:443"       # MQTT over TLS (público)
+    volumes:
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - ./mosquitto/passwd:/mosquitto/config/passwd:ro
+      - ./mosquitto/certs:/mosquitto/config/certs:ro
+      - ./mosquitto/data:/mosquitto/data
+
+  influxdb:
+    image: influxdb:1.8
+    container_name: evento_influxdb
+    restart: unless-stopped
+    environment:
+      - INFLUXDB_DB=iot
+      - INFLUXDB_HTTP_AUTH_ENABLED=false
+    volumes:
+      - influxdb_data:/var/lib/influxdb
+    # sin ports: solo red interna (telegraf + grafana)
+
+  telegraf:
+    image: telegraf:1.31
+    container_name: evento_telegraf
+    restart: unless-stopped
+    depends_on:
+      - mosquitto
+      - influxdb
+    environment:
+      - MQTT_USER=${MQTT_USER}
+      - MQTT_PASS=${MQTT_PASS}
+      - WIFI_API_URL=${WIFI_API_URL:-}
+      - WIFI_API_TOKEN=${WIFI_API_TOKEN:-}
+    volumes:
+      - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+
+  grafana:
+    image: grafana/grafana:11.2.0
+    container_name: evento_grafana
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3000:3000"   # solo localhost: lo sirve Cloudflare Tunnel
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    depends_on:
+      - influxdb
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: evento_cloudflared
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run --token ${CF_TUNNEL_TOKEN}
+    depends_on:
+      - grafana
+
+  # Dozzle: visor de logs de los contenedores (liviano, sin almacenamiento).
+  # Solo en localhost; se llega por túnel SSH o por Cloudflare Tunnel + Access.
+  dozzle:
+    image: amir20/dozzle:latest
+    container_name: evento_dozzle
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+  # Página estática (Ocarina) servida por nginx en 8081. Túnel: http://web:8081.
+  web:
+    image: nginx:alpine
+    container_name: evento_web
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8081:8081"
+    volumes:
+      - ./web/site:/usr/share/nginx/html:ro
+      - ./web/data:/srv/data:ro                      # datos en vivo (latest.json)
+      - ./web/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+
+  # Genera /web/data/latest.json cada 10s desde InfluxDB (últimos valores de todos
+  # los nodos). nginx lo sirve en /data/latest.json; la página lo lee same-origin.
+  latest-json:
+    image: python:3.12-alpine
+    container_name: evento_latest_json
+    restart: unless-stopped
+    depends_on:
+      - influxdb
+    environment:
+      - INFLUX_URL=http://influxdb:8086
+      - INFLUX_DB=iot
+      - PERIOD_S=10
+      - OUT=/data/latest.json
+    volumes:
+      - ./web/data:/data
+      - ./web/latest-json/query.py:/app/query.py:ro
+    command: python /app/query.py
+
+volumes:
+  influxdb_data:
+  grafana_data:

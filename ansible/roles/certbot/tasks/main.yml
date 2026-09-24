@@ -1,0 +1,42 @@
+---
+- name: Instalar certbot
+  ansible.builtin.apt:
+    name: certbot
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Crear dir de hooks de certbot
+  ansible.builtin.file:
+    path: /etc/letsencrypt/renewal-hooks/deploy
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Instalar hook de deploy (copia cert + recarga mosquitto)
+  ansible.builtin.template:
+    src: certbot-deploy.sh.j2
+    dest: /etc/letsencrypt/renewal-hooks/deploy/mosquitto.sh
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Obtener certificado (HTTP-01, puerto 80)
+  ansible.builtin.command:
+    argv:
+      - certbot
+      - certonly
+      - --standalone
+      - -d
+      - "{{ secrets.mosquitto_domain }}"
+      - -m
+      - "{{ secrets.cert_email }}"
+      - --agree-tos
+      - --no-eff-email
+      - --non-interactive
+  args:
+    creates: "/etc/letsencrypt/live/{{ secrets.mosquitto_domain }}/fullchain.pem"
+
+- name: Copiar cert inicial (hook corre solo en renovaciones)
+  ansible.builtin.command: /etc/letsencrypt/renewal-hooks/deploy/mosquitto.sh

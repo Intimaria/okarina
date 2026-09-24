@@ -1,0 +1,22 @@
+---
+- name: Provisionar backend del evento
+  hosts: mqtt
+  become: true
+  gather_facts: true
+
+  vars:
+    secrets: "{{ lookup('community.sops.sops', playbook_dir + '/../secrets.enc.yaml') | from_yaml }}"
+
+  pre_tasks:
+    - name: Fail si no hay secrets.enc.yaml
+      ansible.builtin.fail:
+        msg: >
+          Creá secrets.enc.yaml (sops) a partir de secrets.example.yaml antes de correr esto.
+          El lookup de community.sops falló.
+      when: secrets is not defined or secrets == {}
+
+  roles:
+    - hardening
+    - docker
+    - certbot
+    - stack

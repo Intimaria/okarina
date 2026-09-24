@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# Deploy hook de certbot: copia el cert a la carpeta que monta mosquitto,
+# ajusta ownership para el user no-root (uid 1883) y recarga el broker.
+set -euo pipefail
+
+DOMAIN="{{ secrets.mosquitto_domain }}"
+LIVE="/etc/letsencrypt/live/${DOMAIN}"
+OUT="{{ deploy_dir }}/mosquitto/certs"
+UID_GID="{{ mosquitto_uid }}"
+
+mkdir -p "${OUT}"
+cp -L "${LIVE}/fullchain.pem" "${OUT}/fullchain.pem"
+cp -L "${LIVE}/privkey.pem"   "${OUT}/privkey.pem"
+chown "${UID_GID}:${UID_GID}" "${OUT}/fullchain.pem" "${OUT}/privkey.pem"
+chmod 644 "${OUT}/fullchain.pem"
+chmod 600 "${OUT}/privkey.pem"
+
+if docker inspect evento_mosquitto >/dev/null 2>&1; then
+  docker exec evento_mosquitto sh -c 'kill -HUP 1' 2>/dev/null || \
+    docker compose -f "{{ deploy_dir }}/docker-compose.yml" restart mosquitto
+fi

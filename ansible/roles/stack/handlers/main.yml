@@ -1,0 +1,8 @@
+---
+# mosquitto lee el password_file solo al arrancar: si el hash cambió, hay que reiniciarlo.
+- name: Reiniciar mosquitto
+  community.docker.docker_compose_v2:
+    project_src: "{{ deploy_dir }}"
+    services:
+      - mosquitto
+    state: restarted
