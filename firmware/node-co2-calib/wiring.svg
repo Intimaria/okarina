@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="660" viewBox="0 0 1000 660" font-family="Helvetica, Arial, sans-serif">
+  <rect width="1000" height="660" fill="#ffffff"/>
+  <text x="500" y="38" text-anchor="middle" font-size="23" font-weight="bold" fill="#111">Estación ambiental — ESP32-S3 + SCD41 + INMP441</text>
+
+  <!-- Rails -->
+  <line x1="90" y1="90" x2="910" y2="90" stroke="#d32f2f" stroke-width="4"/>
+  <text x="82" y="86" text-anchor="end" font-size="15" font-weight="bold" fill="#d32f2f">3.3V</text>
+  <line x1="90" y1="600" x2="910" y2="600" stroke="#222222" stroke-width="4"/>
+  <text x="82" y="605" text-anchor="end" font-size="15" font-weight="bold" fill="#222222">GND</text>
+
+  <!-- Power wires (red, to 3.3V rail) -->
+  <line x1="500" y1="230" x2="500" y2="90" stroke="#d32f2f" stroke-width="3"/>
+  <line x1="195" y1="250" x2="195" y2="90" stroke="#d32f2f" stroke-width="3"/>
+  <line x1="805" y1="230" x2="805" y2="90" stroke="#d32f2f" stroke-width="3"/>
+
+  <!-- GND wires (black, to GND rail) -->
+  <line x1="500" y1="410" x2="500" y2="600" stroke="#222222" stroke-width="3"/>
+  <line x1="195" y1="410" x2="195" y2="600" stroke="#222222" stroke-width="3"/>
+  <line x1="770" y1="430" x2="770" y2="600" stroke="#222222" stroke-width="3"/>
+  <line x1="840" y1="430" x2="840" y2="600" stroke="#222222" stroke-width="3"/>
+  <text x="850" y="515" font-size="13" font-weight="bold" fill="#222222">L/R → GND</text>
+
+  <!-- Signal wires: I2C (SCD41 <-> ESP) -->
+  <line x1="280" y1="300" x2="410" y2="300" stroke="#1976d2" stroke-width="3"/>
+  <text x="345" y="292" text-anchor="middle" font-size="13" fill="#1976d2">SDA · GPIO8</text>
+  <line x1="280" y1="350" x2="410" y2="350" stroke="#388e3c" stroke-width="3"/>
+  <text x="345" y="342" text-anchor="middle" font-size="13" fill="#388e3c">SCL · GPIO9</text>
+
+  <!-- Signal wires: I2S (ESP <-> INMP441) -->
+  <line x1="590" y1="270" x2="720" y2="270" stroke="#f57c00" stroke-width="3"/>
+  <text x="655" y="262" text-anchor="middle" font-size="13" fill="#f57c00">WS · GPIO4</text>
+  <line x1="590" y1="320" x2="720" y2="320" stroke="#7b1fa2" stroke-width="3"/>
+  <text x="655" y="312" text-anchor="middle" font-size="13" fill="#7b1fa2">SCK · GPIO5</text>
+  <line x1="590" y1="370" x2="720" y2="370" stroke="#00838f" stroke-width="3"/>
+  <text x="655" y="362" text-anchor="middle" font-size="13" fill="#00838f">SD · GPIO6</text>
+
+  <!-- ESP32-S3 box -->
+  <rect x="410" y="230" width="180" height="180" rx="10" fill="#eef2ff" stroke="#3949ab" stroke-width="2"/>
+  <text x="500" y="328" text-anchor="middle" font-size="18" font-weight="bold" fill="#3949ab">ESP32-S3</text>
+  <text x="500" y="246" text-anchor="middle" font-size="12" fill="#333333">3V3</text>
+  <text x="500" y="403" text-anchor="middle" font-size="12" fill="#333333">GND</text>
+  <text x="418" y="296" font-size="12" fill="#333333">GPIO8</text>
+  <text x="418" y="346" font-size="12" fill="#333333">GPIO9</text>
+  <text x="582" y="266" text-anchor="end" font-size="12" fill="#333333">GPIO4</text>
+  <text x="582" y="316" text-anchor="end" font-size="12" fill="#333333">GPIO5</text>
+  <text x="582" y="366" text-anchor="end" font-size="12" fill="#333333">GPIO6</text>
+
+  <!-- SCD41 box -->
+  <rect x="110" y="250" width="170" height="160" rx="10" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="195" y="322" text-anchor="middle" font-size="15" font-weight="bold" fill="#2e7d32">SCD41</text>
+  <text x="195" y="340" text-anchor="middle" font-size="11" fill="#555555">CO2 / T / H</text>
+  <text x="195" y="357" text-anchor="middle" font-size="11" fill="#555555">I2C · 0x62</text>
+  <text x="195" y="266" text-anchor="middle" font-size="12" fill="#333333">VDD</text>
+  <text x="195" y="403" text-anchor="middle" font-size="12" fill="#333333">GND</text>
+  <text x="272" y="296" text-anchor="end" font-size="12" fill="#333333">SDA</text>
+  <text x="272" y="346" text-anchor="end" font-size="12" fill="#333333">SCL</text>
+
+  <!-- INMP441 box -->
+  <rect x="720" y="230" width="170" height="200" rx="10" fill="#fff3e0" stroke="#ef6c00" stroke-width="2"/>
+  <text x="805" y="322" text-anchor="middle" font-size="15" font-weight="bold" fill="#ef6c00">INMP441</text>
+  <text x="805" y="342" text-anchor="middle" font-size="11" fill="#555555">micrófono · I2S</text>
+  <text x="805" y="246" text-anchor="middle" font-size="12" fill="#333333">VDD</text>
+  <text x="770" y="423" text-anchor="middle" font-size="12" fill="#333333">GND</text>
+  <text x="840" y="423" text-anchor="middle" font-size="12" fill="#333333">L/R</text>
+  <text x="728" y="266" font-size="12" fill="#333333">WS</text>
+  <text x="728" y="316" font-size="12" fill="#333333">SCK</text>
+  <text x="728" y="366" font-size="12" fill="#333333">SD</text>
+
+  <!-- Pin dots -->
+  <g fill="#111111">
+    <circle cx="500" cy="230" r="4"/><circle cx="500" cy="410" r="4"/>
+    <circle cx="410" cy="300" r="4"/><circle cx="410" cy="350" r="4"/>
+    <circle cx="590" cy="270" r="4"/><circle cx="590" cy="320" r="4"/><circle cx="590" cy="370" r="4"/>
+    <circle cx="195" cy="250" r="4"/><circle cx="195" cy="410" r="4"/>
+    <circle cx="280" cy="300" r="4"/><circle cx="280" cy="350" r="4"/>
+    <circle cx="805" cy="230" r="4"/><circle cx="770" cy="430" r="4"/><circle cx="840" cy="430" r="4"/>
+    <circle cx="720" cy="270" r="4"/><circle cx="720" cy="320" r="4"/><circle cx="720" cy="370" r="4"/>
+  </g>
+
+  <!-- Legend -->
+  <line x1="90" y1="622" x2="910" y2="622" stroke="#dddddd" stroke-width="1"/>
+  <g font-size="13" fill="#333333">
+    <line x1="90" y1="645" x2="116" y2="645" stroke="#d32f2f" stroke-width="4"/><text x="122" y="649">3.3V</text>
+    <line x1="200" y1="645" x2="226" y2="645" stroke="#222222" stroke-width="4"/><text x="232" y="649">GND</text>
+    <line x1="305" y1="645" x2="331" y2="645" stroke="#1976d2" stroke-width="4"/><text x="337" y="649">SDA (I2C)</text>
+    <line x1="440" y1="645" x2="466" y2="645" stroke="#388e3c" stroke-width="4"/><text x="472" y="649">SCL (I2C)</text>
+    <line x1="575" y1="645" x2="601" y2="645" stroke="#f57c00" stroke-width="4"/><text x="607" y="649">WS (I2S)</text>
+    <line x1="700" y1="645" x2="726" y2="645" stroke="#7b1fa2" stroke-width="4"/><text x="732" y="649">SCK (I2S)</text>
+    <line x1="820" y1="645" x2="846" y2="645" stroke="#00838f" stroke-width="4"/><text x="852" y="649">SD (I2S)</text>
+  </g>
+</svg>
