@@ -1,0 +1,499 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "graphTooltip": 1,
+  "schemaVersion": 39,
+  "tags": [
+    "iot",
+    "power"
+  ],
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timezone": "",
+  "title": "Energía (SCT-013 + enchufe)",
+  "uid": "evento-power",
+  "version": 9,
+  "panels": [
+    {
+      "id": 1,
+      "title": "Corriente (A) — pinza",
+      "type": "timeseries",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb_iot"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "fillOpacity": 15,
+            "showPoints": "never",
+            "spanNulls": true
+          },
+          "unit": "amp"
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb_iot"
+          },
+          "measurement": "telemetry",
+          "resultFormat": "time_series",
+          "groupBy": [
+            {
+              "type": "time",
+              "params": [
+                "$__interval"
+              ]
+            },
+            {
+              "type": "tag",
+              "params": [
+                "device"
+              ]
+            }
+          ],
+          "select": [
+            [
+              {
+                "type": "field",
+                "params": [
+                  "current_a"
+                ]
+              },
+              {
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": "power"
+            }
+          ],
+          "alias": "Irms"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Tensión (V) — enchufe",
+      "type": "timeseries",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb_iot"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "fillOpacity": 15,
+            "showPoints": "never",
+            "spanNulls": true
+          },
+          "unit": "volt"
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb_iot"
+          },
+          "measurement": "telemetry",
+          "resultFormat": "time_series",
+          "groupBy": [
+            {
+              "type": "time",
+              "params": [
+                "$__interval"
+              ]
+            },
+            {
+              "type": "tag",
+              "params": [
+                "device"
+              ]
+            }
+          ],
+          "select": [
+            [
+              {
+                "type": "field",
+                "params": [
+                  "voltage_v"
+                ]
+              },
+              {
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": "volt"
+            }
+          ],
+          "alias": "V"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Potencia aparente (VA) — V(enchufe) × I(pinza)",
+      "type": "timeseries",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb_iot"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "fillOpacity": 20,
+            "showPoints": "never",
+            "spanNulls": true
+          },
+          "unit": "voltamp"
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "transformations": [
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "Time",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "VA",
+            "mode": "binary",
+            "binary": {
+              "left": "V",
+              "operator": "*",
+              "right": "I"
+            },
+            "replaceFields": true
+          }
+        }
+      ],
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb_iot"
+          },
+          "measurement": "telemetry",
+          "resultFormat": "time_series",
+          "groupBy": [
+            {
+              "type": "time",
+              "params": [
+                "10s"
+              ]
+            }
+          ],
+          "select": [
+            [
+              {
+                "type": "field",
+                "params": [
+                  "voltage_v"
+                ]
+              },
+              {
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": "volt"
+            }
+          ],
+          "alias": "V"
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb_iot"
+          },
+          "measurement": "telemetry",
+          "resultFormat": "time_series",
+          "groupBy": [
+            {
+              "type": "time",
+              "params": [
+                "10s"
+              ]
+            }
+          ],
+          "select": [
+            [
+              {
+                "type": "field",
+                "params": [
+                  "current_a"
+                ]
+              },
+              {
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": "power"
+            }
+          ],
+          "alias": "I"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Energía aparente (kVAh) — integral de VA",
+      "type": "stat",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb_iot"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "decimals": 3
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "horizontal",
+        "colorMode": "value",
+        "graphMode": "area",
+        "textMode": "value_and_name"
+      },
+      "transformations": [
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "Time",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "VA",
+            "mode": "binary",
+            "binary": {
+              "left": "V",
+              "operator": "*",
+              "right": "I"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "cumVA",
+            "mode": "cumulativeFunctions",
+            "cumulative": {
+              "field": "VA",
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "kVAh",
+            "mode": "binary",
+            "binary": {
+              "left": "cumVA",
+              "operator": "*",
+              "right": "10000"
+            },
+            "replaceFields": true
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "kVAh",
+            "mode": "binary",
+            "binary": {
+              "left": "kVAh",
+              "operator": "/",
+              "right": "3.6e9"
+            },
+            "replaceFields": true
+          }
+        }
+      ],
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb_iot"
+          },
+          "measurement": "telemetry",
+          "resultFormat": "time_series",
+          "groupBy": [
+            {
+              "type": "time",
+              "params": [
+                "10s"
+              ]
+            }
+          ],
+          "select": [
+            [
+              {
+                "type": "field",
+                "params": [
+                  "voltage_v"
+                ]
+              },
+              {
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": "volt"
+            }
+          ],
+          "alias": "V"
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb_iot"
+          },
+          "measurement": "telemetry",
+          "resultFormat": "time_series",
+          "groupBy": [
+            {
+              "type": "time",
+              "params": [
+                "10s"
+              ]
+            }
+          ],
+          "select": [
+            [
+              {
+                "type": "field",
+                "params": [
+                  "current_a"
+                ]
+              },
+              {
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": "power"
+            }
+          ],
+          "alias": "I"
+        }
+      ]
+    }
+  ]
+}

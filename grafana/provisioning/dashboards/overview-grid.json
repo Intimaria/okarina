@@ -1,0 +1,2649 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "graphTooltip": 0,
+  "schemaVersion": 39,
+  "tags": [
+    "iot",
+    "overview"
+  ],
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timezone": "",
+  "title": "General (grilla) — nodos CO2",
+  "uid": "evento-overview-grid",
+  "version": 12,
+  "templating": {
+    "list": []
+  },
+  "panels": [
+    {
+      "id": 1,
+      "title": "Coworking · CO2 (ppm)",
+      "type": "gauge",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb_iot"
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 5,
+        "x": 1,
+        "y": 0
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ppm",
+          "min": 400,
+          "max": 4000,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 1000
+              },
+              {
+                "color": "red",
+                "value": 2000
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Detalle de Coworking",
+              "url": "/d/evento-co2?var-device=co2-01&${__url_time_range}",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb_iot"
+          },
+          "measurement": "telemetry",
+          "resultFormat": "time_series",
+          "groupBy": [
+            {
+              "type": "time",
+              "params": [
+                "$__interval"
+              ]
+            }
+          ],
+          "select": [
+            [
+              {
+                "type": "field",
+                "params": [
+                  "co2_ppm"
+                ]
+              },
+              {
+                "type": "last",
+                "params": []
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": "co2"
+            },
+            {
+              "key": "device",
+              "operator": "=",
+              "value": "co2-01"
+            }
+          ],
+          "alias": "co2-02"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Ruido (dB SPL)",
+      "type": "gauge",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb_iot"
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 5,
+        "x": 6,
+        "y": 0
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "dB",
+          "min": 30,
+          "max": 100,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 75
+              },
+              {
+                "color": "red",
+                "value": 88
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Detalle de Coworking",
+              "url": "/d/evento-co2?var-device=co2-01&${__url_time_range}",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb_iot"
+          },
+          "measurement": "telemetry",
+          "resultFormat": "time_series",
+          "groupBy": [
+            {
+              "type": "time",
+              "params": [
+                "1m"
+              ]
+            },
+            {
+              "type": "fill",
+              "params": [
+                "none"
+              ]
+            }
+          ],
+          "select": [
+            [
+              {
+                "type": "field",
+                "params": [
+                  "noise_dbfs"
+                ]
+              },
+              {
+                "type": "mean",
+                "params": []
+              },
+              {
+                "type": "math",
+                "params": [
+                  "+ 100"
+                ]
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": "co2"
+            },
+            {
+              "key": "device",
+              "operator": "=",
+              "value": "co2-01"
+            }
+          ],
+          "alias": "co2-02"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Tienda · CO2 (ppm)",
+      "type": "gauge",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb_iot"
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 5,
+        "x": 13,
+        "y": 0
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ppm",
+          "min": 400,
+          "max": 4000,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 1000
+              },
+              {
+                "color": "red",
+                "value": 2000
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Detalle de Tienda",
+              "url": "/d/evento-co2?var-device=co2-02&${__url_time_range}",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb_iot"
+          },
+          "measurement": "telemetry",
+          "resultFormat": "time_series",
+          "groupBy": [
+            {
+              "type": "time",
+              "params": [
+                "$__interval"
+              ]
+            }
+          ],
+          "select": [
+            [
+              {
+                "type": "field",
+                "params": [
+                  "co2_ppm"
+                ]
+              },
+              {
+                "type": "last",
+                "params": []
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": "co2"
+            },
+            {
+              "key": "device",
+              "operator": "=",
+              "value": "co2-02"
+            }
+          ],
+          "alias": "co2-02"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Ruido (dB SPL)",
+      "type": "gauge",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb_iot"
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 5,
+        "x": 18,
+        "y": 0
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "dB",
+          "min": 30,
+          "max": 100,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 75
+              },
+              {
+                "color": "red",
+                "value": 88
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Detalle de Tienda",
+              "url": "/d/evento-co2?var-device=co2-02&${__url_time_range}",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb_iot"
+          },
+          "measurement": "telemetry",
+          "resultFormat": "time_series",
+          "groupBy": [
+            {
+              "type": "time",
+              "params": [
+                "1m"
+              ]
+            },
+            {
+              "type": "fill",
+              "params": [
+                "none"
+              ]
+            }
+          ],
+          "select": [
+            [
+              {
+                "type": "field",
+                "params": [
+                  "noise_dbfs"
+                ]
+              },
+              {
+                "type": "mean",
+                "params": []
+              },
+              {
+                "type": "math",
+                "params": [
+                  "+ 100"
+                ]
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": "co2"
+            },
+            {
+              "key": "device",
+              "operator": "=",
+              "value": "co2-02"
+            }
+          ],
+          "alias": "co2-02"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Temp (°C)",
+      "type": "stat",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb_iot"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 1,
+        "y": 6
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "celsius",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 18
+              },
+              {
+                "color": "orange",
+                "value": 28
+              },
+              {
+                "color": "red",
+                "value": 32
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Detalle de Coworking",
+              "url": "/d/evento-co2?var-device=co2-01&${__url_time_range}",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "horizontal",
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "value"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb_iot"
+          },
+          "measurement": "telemetry",
+          "resultFormat": "time_series",
+          "groupBy": [
+            {
+              "type": "time",
+              "params": [
+                "$__interval"
+              ]
+            }
+          ],
+          "select": [
+            [
+              {
+                "type": "field",
+                "params": [
+                  "temp_c"
+                ]
+              },
+              {
+                "type": "last",
+                "params": []
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": "co2"
+            },
+            {
+              "key": "device",
+              "operator": "=",
+              "value": "co2-01"
+            }
+          ],
+          "alias": "co2-02"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Humedad (%)",
+      "type": "stat",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb_iot"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 6,
+        "y": 6
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "orange",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 35
+              },
+              {
+                "color": "blue",
+                "value": 65
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Detalle de Coworking",
+              "url": "/d/evento-co2?var-device=co2-01&${__url_time_range}",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "horizontal",
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "value"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb_iot"
+          },
+          "measurement": "telemetry",
+          "resultFormat": "time_series",
+          "groupBy": [
+            {
+              "type": "time",
+              "params": [
+                "$__interval"
+              ]
+            }
+          ],
+          "select": [
+            [
+              {
+                "type": "field",
+                "params": [
+                  "hum_pct"
+                ]
+              },
+              {
+                "type": "last",
+                "params": []
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": "co2"
+            },
+            {
+              "key": "device",
+              "operator": "=",
+              "value": "co2-01"
+            }
+          ],
+          "alias": "co2-02"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Temp (°C)",
+      "type": "stat",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb_iot"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 13,
+        "y": 6
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "celsius",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 18
+              },
+              {
+                "color": "orange",
+                "value": 28
+              },
+              {
+                "color": "red",
+                "value": 32
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Detalle de Tienda",
+              "url": "/d/evento-co2?var-device=co2-02&${__url_time_range}",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "horizontal",
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "value"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb_iot"
+          },
+          "measurement": "telemetry",
+          "resultFormat": "time_series",
+          "groupBy": [
+            {
+              "type": "time",
+              "params": [
+                "$__interval"
+              ]
+            }
+          ],
+          "select": [
+            [
+              {
+                "type": "field",
+                "params": [
+                  "temp_c"
+                ]
+              },
+              {
+                "type": "last",
+                "params": []
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": "co2"
+            },
+            {
+              "key": "device",
+              "operator": "=",
+              "value": "co2-02"
+            }
+          ],
+          "alias": "co2-02"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Humedad (%)",
+      "type": "stat",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb_iot"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 18,
+        "y": 6
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "orange",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 35
+              },
+              {
+                "color": "blue",
+                "value": 65
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Detalle de Tienda",
+              "url": "/d/evento-co2?var-device=co2-02&${__url_time_range}",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "horizontal",
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "value"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb_iot"
+          },
+          "measurement": "telemetry",
+          "resultFormat": "time_series",
+          "groupBy": [
+            {
+              "type": "time",
+              "params": [
+                "$__interval"
+              ]
+            }
+          ],
+          "select": [
+            [
+              {
+                "type": "field",
+                "params": [
+                  "hum_pct"
+                ]
+              },
+              {
+                "type": "last",
+                "params": []
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": "co2"
+            },
+            {
+              "key": "device",
+              "operator": "=",
+              "value": "co2-02"
+            }
+          ],
+          "alias": "co2-02"
+        }
+      ]
+    },
+    {
+      "id": 900,
+      "type": "text",
+      "title": "",
+      "gridPos": {
+        "h": 2,
+        "w": 24,
+        "x": 0,
+        "y": 10
+      },
+      "options": {
+        "mode": "html",
+        "content": ""
+      },
+      "transparent": true
+    },
+    {
+      "id": 9,
+      "title": "Gran sala · CO2 (ppm)",
+      "type": "gauge",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb_iot"
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 5,
+        "x": 1,
+        "y": 12
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ppm",
+          "min": 400,
+          "max": 4000,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 1000
+              },
+              {
+                "color": "red",
+                "value": 2000
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Detalle de Gran sala",
+              "url": "/d/evento-co2?var-device=co2-05&${__url_time_range}",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb_iot"
+          },
+          "measurement": "telemetry",
+          "resultFormat": "time_series",
+          "groupBy": [
+            {
+              "type": "time",
+              "params": [
+                "$__interval"
+              ]
+            }
+          ],
+          "select": [
+            [
+              {
+                "type": "field",
+                "params": [
+                  "co2_ppm"
+                ]
+              },
+              {
+                "type": "last",
+                "params": []
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": "co2"
+            },
+            {
+              "key": "device",
+              "operator": "=",
+              "value": "co2-05"
+            }
+          ],
+          "alias": "co2-05"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Ruido (dB SPL)",
+      "type": "gauge",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb_iot"
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 5,
+        "x": 6,
+        "y": 12
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "dB",
+          "min": 30,
+          "max": 100,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 75
+              },
+              {
+                "color": "red",
+                "value": 88
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Detalle de Gran sala",
+              "url": "/d/evento-co2?var-device=co2-05&${__url_time_range}",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb_iot"
+          },
+          "measurement": "telemetry",
+          "resultFormat": "time_series",
+          "groupBy": [
+            {
+              "type": "time",
+              "params": [
+                "1m"
+              ]
+            },
+            {
+              "type": "fill",
+              "params": [
+                "none"
+              ]
+            }
+          ],
+          "select": [
+            [
+              {
+                "type": "field",
+                "params": [
+                  "noise_dbfs"
+                ]
+              },
+              {
+                "type": "mean",
+                "params": []
+              },
+              {
+                "type": "math",
+                "params": [
+                  "+ 100"
+                ]
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": "co2"
+            },
+            {
+              "key": "device",
+              "operator": "=",
+              "value": "co2-05"
+            }
+          ],
+          "alias": "co2-05"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "title": "Auditorio · CO2 (ppm)",
+      "type": "gauge",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb_iot"
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 5,
+        "x": 13,
+        "y": 12
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ppm",
+          "min": 400,
+          "max": 4000,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 1000
+              },
+              {
+                "color": "red",
+                "value": 2000
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Detalle de Auditorio",
+              "url": "/d/evento-co2?var-device=co2-06&${__url_time_range}",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb_iot"
+          },
+          "measurement": "telemetry",
+          "resultFormat": "time_series",
+          "groupBy": [
+            {
+              "type": "time",
+              "params": [
+                "$__interval"
+              ]
+            }
+          ],
+          "select": [
+            [
+              {
+                "type": "field",
+                "params": [
+                  "co2_ppm"
+                ]
+              },
+              {
+                "type": "last",
+                "params": []
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": "co2"
+            },
+            {
+              "key": "device",
+              "operator": "=",
+              "value": "co2-06"
+            }
+          ],
+          "alias": "co2-06"
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "title": "Ruido (dB SPL)",
+      "type": "gauge",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb_iot"
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 5,
+        "x": 18,
+        "y": 12
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "dB",
+          "min": 30,
+          "max": 100,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 75
+              },
+              {
+                "color": "red",
+                "value": 88
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Detalle de Auditorio",
+              "url": "/d/evento-co2?var-device=co2-06&${__url_time_range}",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb_iot"
+          },
+          "measurement": "telemetry",
+          "resultFormat": "time_series",
+          "groupBy": [
+            {
+              "type": "time",
+              "params": [
+                "1m"
+              ]
+            },
+            {
+              "type": "fill",
+              "params": [
+                "none"
+              ]
+            }
+          ],
+          "select": [
+            [
+              {
+                "type": "field",
+                "params": [
+                  "noise_dbfs"
+                ]
+              },
+              {
+                "type": "mean",
+                "params": []
+              },
+              {
+                "type": "math",
+                "params": [
+                  "+ 100"
+                ]
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": "co2"
+            },
+            {
+              "key": "device",
+              "operator": "=",
+              "value": "co2-06"
+            }
+          ],
+          "alias": "co2-06"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "title": "Temp (°C)",
+      "type": "stat",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb_iot"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 1,
+        "y": 18
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "celsius",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 18
+              },
+              {
+                "color": "orange",
+                "value": 28
+              },
+              {
+                "color": "red",
+                "value": 32
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Detalle de Gran sala",
+              "url": "/d/evento-co2?var-device=co2-05&${__url_time_range}",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "horizontal",
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "value"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb_iot"
+          },
+          "measurement": "telemetry",
+          "resultFormat": "time_series",
+          "groupBy": [
+            {
+              "type": "time",
+              "params": [
+                "$__interval"
+              ]
+            }
+          ],
+          "select": [
+            [
+              {
+                "type": "field",
+                "params": [
+                  "temp_c"
+                ]
+              },
+              {
+                "type": "last",
+                "params": []
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": "co2"
+            },
+            {
+              "key": "device",
+              "operator": "=",
+              "value": "co2-05"
+            }
+          ],
+          "alias": "co2-05"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "title": "Humedad (%)",
+      "type": "stat",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb_iot"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 6,
+        "y": 18
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "orange",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 35
+              },
+              {
+                "color": "blue",
+                "value": 65
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Detalle de Gran sala",
+              "url": "/d/evento-co2?var-device=co2-05&${__url_time_range}",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "horizontal",
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "value"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb_iot"
+          },
+          "measurement": "telemetry",
+          "resultFormat": "time_series",
+          "groupBy": [
+            {
+              "type": "time",
+              "params": [
+                "$__interval"
+              ]
+            }
+          ],
+          "select": [
+            [
+              {
+                "type": "field",
+                "params": [
+                  "hum_pct"
+                ]
+              },
+              {
+                "type": "last",
+                "params": []
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": "co2"
+            },
+            {
+              "key": "device",
+              "operator": "=",
+              "value": "co2-05"
+            }
+          ],
+          "alias": "co2-05"
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "title": "Temp (°C)",
+      "type": "stat",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb_iot"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 13,
+        "y": 18
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "celsius",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 18
+              },
+              {
+                "color": "orange",
+                "value": 28
+              },
+              {
+                "color": "red",
+                "value": 32
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Detalle de Auditorio",
+              "url": "/d/evento-co2?var-device=co2-06&${__url_time_range}",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "horizontal",
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "value"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb_iot"
+          },
+          "measurement": "telemetry",
+          "resultFormat": "time_series",
+          "groupBy": [
+            {
+              "type": "time",
+              "params": [
+                "$__interval"
+              ]
+            }
+          ],
+          "select": [
+            [
+              {
+                "type": "field",
+                "params": [
+                  "temp_c"
+                ]
+              },
+              {
+                "type": "last",
+                "params": []
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": "co2"
+            },
+            {
+              "key": "device",
+              "operator": "=",
+              "value": "co2-06"
+            }
+          ],
+          "alias": "co2-06"
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "title": "Humedad (%)",
+      "type": "stat",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb_iot"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 18,
+        "y": 18
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "orange",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 35
+              },
+              {
+                "color": "blue",
+                "value": 65
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Detalle de Auditorio",
+              "url": "/d/evento-co2?var-device=co2-06&${__url_time_range}",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "horizontal",
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "value"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb_iot"
+          },
+          "measurement": "telemetry",
+          "resultFormat": "time_series",
+          "groupBy": [
+            {
+              "type": "time",
+              "params": [
+                "$__interval"
+              ]
+            }
+          ],
+          "select": [
+            [
+              {
+                "type": "field",
+                "params": [
+                  "hum_pct"
+                ]
+              },
+              {
+                "type": "last",
+                "params": []
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": "co2"
+            },
+            {
+              "key": "device",
+              "operator": "=",
+              "value": "co2-06"
+            }
+          ],
+          "alias": "co2-06"
+        }
+      ]
+    },
+    {
+      "id": 901,
+      "type": "text",
+      "title": "",
+      "gridPos": {
+        "h": 2,
+        "w": 24,
+        "x": 0,
+        "y": 22
+      },
+      "options": {
+        "mode": "html",
+        "content": ""
+      },
+      "transparent": true
+    },
+    {
+      "id": 17,
+      "title": "Abasto · CO2 (ppm)",
+      "type": "gauge",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb_iot"
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 5,
+        "x": 1,
+        "y": 24
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ppm",
+          "min": 400,
+          "max": 4000,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 1000
+              },
+              {
+                "color": "red",
+                "value": 2000
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Detalle de Abasto",
+              "url": "/d/evento-co2?var-device=co2-07&${__url_time_range}",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb_iot"
+          },
+          "measurement": "telemetry",
+          "resultFormat": "time_series",
+          "groupBy": [
+            {
+              "type": "time",
+              "params": [
+                "$__interval"
+              ]
+            }
+          ],
+          "select": [
+            [
+              {
+                "type": "field",
+                "params": [
+                  "co2_ppm"
+                ]
+              },
+              {
+                "type": "last",
+                "params": []
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": "co2"
+            },
+            {
+              "key": "device",
+              "operator": "=",
+              "value": "co2-07"
+            }
+          ],
+          "alias": "co2-07"
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "title": "Ruido (dB SPL)",
+      "type": "gauge",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb_iot"
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 5,
+        "x": 6,
+        "y": 24
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "dB",
+          "min": 30,
+          "max": 100,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 75
+              },
+              {
+                "color": "red",
+                "value": 88
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Detalle de Abasto",
+              "url": "/d/evento-co2?var-device=co2-07&${__url_time_range}",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb_iot"
+          },
+          "measurement": "telemetry",
+          "resultFormat": "time_series",
+          "groupBy": [
+            {
+              "type": "time",
+              "params": [
+                "1m"
+              ]
+            },
+            {
+              "type": "fill",
+              "params": [
+                "none"
+              ]
+            }
+          ],
+          "select": [
+            [
+              {
+                "type": "field",
+                "params": [
+                  "noise_dbfs"
+                ]
+              },
+              {
+                "type": "mean",
+                "params": []
+              },
+              {
+                "type": "math",
+                "params": [
+                  "+ 100"
+                ]
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": "co2"
+            },
+            {
+              "key": "device",
+              "operator": "=",
+              "value": "co2-07"
+            }
+          ],
+          "alias": "co2-07"
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "title": "Columnas · CO2 (ppm)",
+      "type": "gauge",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb_iot"
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 5,
+        "x": 13,
+        "y": 24
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ppm",
+          "min": 400,
+          "max": 4000,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 1000
+              },
+              {
+                "color": "red",
+                "value": 2000
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Detalle de Columnas",
+              "url": "/d/evento-co2?var-device=co2-08&${__url_time_range}",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb_iot"
+          },
+          "measurement": "telemetry",
+          "resultFormat": "time_series",
+          "groupBy": [
+            {
+              "type": "time",
+              "params": [
+                "$__interval"
+              ]
+            }
+          ],
+          "select": [
+            [
+              {
+                "type": "field",
+                "params": [
+                  "co2_ppm"
+                ]
+              },
+              {
+                "type": "last",
+                "params": []
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": "co2"
+            },
+            {
+              "key": "device",
+              "operator": "=",
+              "value": "co2-08"
+            }
+          ],
+          "alias": "co2-08"
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "title": "Ruido (dB SPL)",
+      "type": "gauge",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb_iot"
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 5,
+        "x": 18,
+        "y": 24
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "dB",
+          "min": 30,
+          "max": 100,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 75
+              },
+              {
+                "color": "red",
+                "value": 88
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Detalle de Columnas",
+              "url": "/d/evento-co2?var-device=co2-08&${__url_time_range}",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb_iot"
+          },
+          "measurement": "telemetry",
+          "resultFormat": "time_series",
+          "groupBy": [
+            {
+              "type": "time",
+              "params": [
+                "1m"
+              ]
+            },
+            {
+              "type": "fill",
+              "params": [
+                "none"
+              ]
+            }
+          ],
+          "select": [
+            [
+              {
+                "type": "field",
+                "params": [
+                  "noise_dbfs"
+                ]
+              },
+              {
+                "type": "mean",
+                "params": []
+              },
+              {
+                "type": "math",
+                "params": [
+                  "+ 100"
+                ]
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": "co2"
+            },
+            {
+              "key": "device",
+              "operator": "=",
+              "value": "co2-08"
+            }
+          ],
+          "alias": "co2-08"
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "title": "Temp (°C)",
+      "type": "stat",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb_iot"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 1,
+        "y": 30
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "celsius",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 18
+              },
+              {
+                "color": "orange",
+                "value": 28
+              },
+              {
+                "color": "red",
+                "value": 32
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Detalle de Abasto",
+              "url": "/d/evento-co2?var-device=co2-07&${__url_time_range}",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "horizontal",
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "value"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb_iot"
+          },
+          "measurement": "telemetry",
+          "resultFormat": "time_series",
+          "groupBy": [
+            {
+              "type": "time",
+              "params": [
+                "$__interval"
+              ]
+            }
+          ],
+          "select": [
+            [
+              {
+                "type": "field",
+                "params": [
+                  "temp_c"
+                ]
+              },
+              {
+                "type": "last",
+                "params": []
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": "co2"
+            },
+            {
+              "key": "device",
+              "operator": "=",
+              "value": "co2-07"
+            }
+          ],
+          "alias": "co2-07"
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "title": "Humedad (%)",
+      "type": "stat",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb_iot"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 6,
+        "y": 30
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "orange",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 35
+              },
+              {
+                "color": "blue",
+                "value": 65
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Detalle de Abasto",
+              "url": "/d/evento-co2?var-device=co2-07&${__url_time_range}",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "horizontal",
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "value"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb_iot"
+          },
+          "measurement": "telemetry",
+          "resultFormat": "time_series",
+          "groupBy": [
+            {
+              "type": "time",
+              "params": [
+                "$__interval"
+              ]
+            }
+          ],
+          "select": [
+            [
+              {
+                "type": "field",
+                "params": [
+                  "hum_pct"
+                ]
+              },
+              {
+                "type": "last",
+                "params": []
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": "co2"
+            },
+            {
+              "key": "device",
+              "operator": "=",
+              "value": "co2-07"
+            }
+          ],
+          "alias": "co2-07"
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "title": "Temp (°C)",
+      "type": "stat",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb_iot"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 13,
+        "y": 30
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "celsius",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 18
+              },
+              {
+                "color": "orange",
+                "value": 28
+              },
+              {
+                "color": "red",
+                "value": 32
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Detalle de Columnas",
+              "url": "/d/evento-co2?var-device=co2-08&${__url_time_range}",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "horizontal",
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "value"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb_iot"
+          },
+          "measurement": "telemetry",
+          "resultFormat": "time_series",
+          "groupBy": [
+            {
+              "type": "time",
+              "params": [
+                "$__interval"
+              ]
+            }
+          ],
+          "select": [
+            [
+              {
+                "type": "field",
+                "params": [
+                  "temp_c"
+                ]
+              },
+              {
+                "type": "last",
+                "params": []
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": "co2"
+            },
+            {
+              "key": "device",
+              "operator": "=",
+              "value": "co2-08"
+            }
+          ],
+          "alias": "co2-08"
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "title": "Humedad (%)",
+      "type": "stat",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb_iot"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 18,
+        "y": 30
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "orange",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 35
+              },
+              {
+                "color": "blue",
+                "value": 65
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Detalle de Columnas",
+              "url": "/d/evento-co2?var-device=co2-08&${__url_time_range}",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "horizontal",
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "value"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb_iot"
+          },
+          "measurement": "telemetry",
+          "resultFormat": "time_series",
+          "groupBy": [
+            {
+              "type": "time",
+              "params": [
+                "$__interval"
+              ]
+            }
+          ],
+          "select": [
+            [
+              {
+                "type": "field",
+                "params": [
+                  "hum_pct"
+                ]
+              },
+              {
+                "type": "last",
+                "params": []
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": "co2"
+            },
+            {
+              "key": "device",
+              "operator": "=",
+              "value": "co2-08"
+            }
+          ],
+          "alias": "co2-08"
+        }
+      ]
+    }
+  ]
+}
